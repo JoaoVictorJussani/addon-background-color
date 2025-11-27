@@ -1,0 +1,25 @@
+name: Création artefact extension Firefox & Chrome
+
+on: [push]
+
+- name: Create Firefox Extension Package
+  run: |
+    # Remplacez par votre commande réelle de build/packaging pour Firefox
+    # Exemple : npm run build:firefox génère un zip ou un dossier
+    # Pour cet exemple, supposons qu’un dossier 'dist/firefox' soit créé
+    zip -r firefox-extension.zip dist/firefox/
+
+- name: Create Chrome Extension Package
+  run: |
+    # Remplacez par votre commande réelle de build/packaging pour Chrome
+    # Exemple : npm run build:chrome génère un zip ou un dossier
+    # Pour cet exemple, supposons qu’un dossier 'dist/chrome' soit créé
+    zip -r chrome-extension.zip dist/chrome/
+
+- name: Upload Extension Packages
+  uses: actions/upload-artifact@v3
+  with:
+    name: browser-extension-packages
+    path: |
+      firefox-extension.zip
+      chrome-extension.zip
