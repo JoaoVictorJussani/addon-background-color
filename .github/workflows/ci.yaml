@@ -1,31 +1,38 @@
-name: Création artefact extension Firefox & Chrome
-
-on: 
-  - push
-  - pull_request
-
+name: CI
+ 
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+ 
+ 
 jobs:
-  generate_artefact:
+  firefox:
     runs-on: ubuntu-latest
     steps:
-      - name: Create Firefox Extension Package
-        run: |
-          # Remplacez par votre commande réelle de build/packaging pour Firefox
-          # Exemple : npm run build:firefox génère un zip ou un dossier
-          # Pour cet exemple, supposons qu’un dossier 'dist/firefox' soit créé
-          zip -r firefox-extension.zip dist/firefox/
-
-      - name: Create Chrome Extension Package
-        run: |
-          # Remplacez par votre commande réelle de build/packaging pour Chrome
-          # Exemple : npm run build:chrome génère un zip ou un dossier
-          # Pour cet exemple, supposons qu’un dossier 'dist/chrome' soit créé
-          zip -r chrome-extension.zip dist/chrome/
-
-      - name: Upload Extension Packages
+      - name: Checkout
+        uses: actions/checkout@v4
+ 
+      - name: npm install
+        uses: actions/setup-node@v4
+ 
+      - name: Install dependencies
+        run: npm install
+ 
+      - name: lint
+        run: npm run lint:check
+     
+      - name: run
+        run: npm run build:firefox
+ 
+      - name: create zip
+        run: zip -r app.zip ./*
+ 
+      - name: Upload artifact
         uses: actions/upload-artifact@v4
         with:
-          name: browser-extension-packages
-          path: |
-            firefox-extension.zip
-            chrome-extension.zip
+          path: app.zip
+          name: firefox-extension
