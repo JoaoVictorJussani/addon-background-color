@@ -1,6 +1,6 @@
 name: Création artefact extension Firefox & Chrome
 
-on: [push]
+on: [push, pull_request]
   jobs:
     generate_artefact:
     run-on: ubuntu-latest
