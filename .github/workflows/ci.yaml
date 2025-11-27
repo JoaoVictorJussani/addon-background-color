@@ -23,7 +23,7 @@ jobs:
           zip -r chrome-extension.zip dist/chrome/
 
       - name: Upload Extension Packages
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: browser-extension-packages
           path: |
