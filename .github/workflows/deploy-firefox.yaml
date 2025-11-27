@@ -1,4 +1,4 @@
-name: CI
+name: deploy-firefox
  
 on:
   push:
@@ -22,14 +22,14 @@ jobs:
       - name: Install dependencies
         run: npm install
  
+      - name: Install web-ext
+        run: npm i web-ext
+ 
       - name: lint
         run: npm run lint:check
      
       - name: run
         run: npm run build:firefox
- 
-      - name: create zip
-        run: zip -r app.zip ./*
 
       - name: Sign with web-ext
         run: |
@@ -37,12 +37,5 @@ jobs:
           --api-key ${{ secrets.USER }} \
           --api-secret ${{ secrets.MOZILLA }} \
           --channel unlisted \
-          --source-dir ./build \
+          --source-dir ./* \
           --artifacts-dir ./signed 
-
-
-      - name: Upload artifact
-        uses: actions/upload-artifact@v4
-        with:
-          path: app.zip
-          name: firefox-extension
